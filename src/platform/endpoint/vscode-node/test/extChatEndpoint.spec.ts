@@ -112,4 +112,25 @@ describe('ExtensionContributedChatEndpoint usage reporting', () => {
 			expect(result.usage?.completion_tokens).toBe(0);
 		}
 	});
+
+	it('should reject usage with invalid field types', async () => {
+		const invalidUsage = { prompt_tokens: '100', completion_tokens: 50, total_tokens: 150 };
+		const endpoint = createEndpoint([
+			new LanguageModelTextPart('Hello'),
+			new LanguageModelDataPart(new TextEncoder().encode(JSON.stringify(invalidUsage)), CustomDataPartMimeTypes.Usage),
+		]);
+
+		const result = await endpoint.makeChatRequest2({
+			debugName: 'test',
+			messages: [],
+			finishedCb: undefined,
+			location: ChatLocation.Panel,
+		}, { isCancellationRequested: false, onCancellationRequested: vi.fn() } as any);
+
+		expect(result.type).toBe(ChatFetchResponseType.Success);
+		if (result.type === ChatFetchResponseType.Success) {
+			expect(result.usage?.prompt_tokens).toBe(0);
+			expect(result.usage?.completion_tokens).toBe(0);
+		}
+	});
 });

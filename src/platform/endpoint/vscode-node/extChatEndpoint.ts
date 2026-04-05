@@ -18,7 +18,7 @@ import { ContextManagementResponse } from '../../networking/common/anthropic';
 import { FinishedCallback, OpenAiFunctionTool, OptionalChatRequestParams } from '../../networking/common/fetch';
 import { Response } from '../../networking/common/fetcherService';
 import { IChatEndpoint, ICreateEndpointBodyOptions, IEndpointBody, IMakeChatRequestOptions } from '../../networking/common/networking';
-import { ChatCompletion, APIUsage } from '../../networking/common/openai';
+import { APIUsage, ChatCompletion, isApiUsage } from '../../networking/common/openai';
 import { IOTelService } from '../../otel/common/otelService';
 import { retrieveCapturingTokenByCorrelation, storeCapturingTokenForCorrelation } from '../../requestLogger/node/requestLogger';
 import { ITelemetryService } from '../../telemetry/common/telemetry';
@@ -233,7 +233,10 @@ export class ExtensionContributedChatEndpoint implements IChatEndpoint {
 						await streamRecorder.callback?.(text, 0, { text: '', contextManagement });
 					} else if (chunk.mimeType === CustomDataPartMimeTypes.Usage) {
 						try {
-							reportedUsage = JSON.parse(new TextDecoder().decode(chunk.data)) as APIUsage;
+							const parsed = JSON.parse(new TextDecoder().decode(chunk.data));
+							if (isApiUsage(parsed)) {
+								reportedUsage = parsed;
+							}
 						} catch {
 							// ignore malformed usage data
 						}
