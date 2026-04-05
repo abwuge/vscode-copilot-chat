@@ -25,7 +25,7 @@ import { IOctoKitService } from '../../../platform/github/common/githubService';
 import { ILogService } from '../../../platform/log/common/logService';
 import { isAnthropicToolSearchEnabled } from '../../../platform/networking/common/anthropic';
 import { FinishedCallback, OpenAiFunctionTool, OptionalChatRequestParams } from '../../../platform/networking/common/fetch';
-import { APIUsage } from '../../../platform/networking/common/openai';
+import type { APIUsage } from '../../../platform/networking/common/openai';
 import { IChatEndpoint, IEndpoint } from '../../../platform/networking/common/networking';
 import { IOTelService, type OTelModelOptions } from '../../../platform/otel/common/otelService';
 import { retrieveCapturingTokenByCorrelation, runWithCapturingToken } from '../../../platform/requestLogger/node/requestLogger';

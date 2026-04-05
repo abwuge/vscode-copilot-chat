@@ -18,7 +18,7 @@ import { ContextManagementResponse } from '../../networking/common/anthropic';
 import { FinishedCallback, OpenAiFunctionTool, OptionalChatRequestParams } from '../../networking/common/fetch';
 import { Response } from '../../networking/common/fetcherService';
 import { IChatEndpoint, ICreateEndpointBodyOptions, IEndpointBody, IMakeChatRequestOptions } from '../../networking/common/networking';
-import { APIUsage, ChatCompletion, isApiUsage } from '../../networking/common/openai';
+import { type APIUsage, ChatCompletion, isApiUsage } from '../../networking/common/openai';
 import { IOTelService } from '../../otel/common/otelService';
 import { retrieveCapturingTokenByCorrelation, storeCapturingTokenForCorrelation } from '../../requestLogger/node/requestLogger';
 import { ITelemetryService } from '../../telemetry/common/telemetry';
