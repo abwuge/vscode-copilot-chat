@@ -235,6 +235,7 @@ export class ExtensionContributedChatEndpoint implements IChatEndpoint {
 						try {
 							const parsed = JSON.parse(new TextDecoder().decode(chunk.data));
 							if (isApiUsage(parsed)) {
+								// Last-write-wins: if multiple Usage DataParts arrive, keep the last one
 								reportedUsage = parsed;
 							}
 						} catch {
